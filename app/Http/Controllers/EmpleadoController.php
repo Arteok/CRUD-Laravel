@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EmpleadoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index()    
+    {        
         $datos['empleados']=Empleado::paginate(5);
         return view('empleado.index', $datos );
     }
@@ -50,17 +51,30 @@ class EmpleadoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Empleado $empleado)
+    public function edit($id)
     {
         //
+        $empleado=Empleado::findOrFail($id);
+        return view('empleado.edit',compact('empleado'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Empleado $empleado)
+    public function update(Request $request, $id)
     {
-        //
+        //        
+        $datosEmpleado = request()->except('_token','_method');
+        if($request->hasFile('Foto')){
+            $empleado=Empleado::finOrFail($id);
+            Storage::delete('public/'.$empleado->Foto);
+            $datosEmpleado['Foto']=$request->file('Foto')->store('uploads','public');
+        }       
+        
+        Empleado::where('id','=',$id)->update($datosEmpleado);
+        $empleado=Empleado::findOrFail($id);
+        return view('empleado.edit',compact('empleado'));
     }
 
     /**
