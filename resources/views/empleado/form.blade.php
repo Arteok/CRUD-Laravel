@@ -1,5 +1,5 @@
 Formulario que tendrá en común con create y edit
-
+<h1>{{ $modo}} empleado</h1>
 <label for="Nombre"> Nombre </label>
     <input type="text" name="Nombre" value="{{ isset($empleado->Nombre)?$empleado->Nombre:'' }}" id="Nombre">
     <br>       
@@ -13,7 +13,7 @@ Formulario que tendrá en común con create y edit
      <br>
 
      <label for="Correo">Correo</label> 
-    <input type="text" name="Correo" value="{{ isset($empleado->Correo)?$empleado->Correo:''}}" id="Correo">
+    <input type="text" name="Correo" value="{{ isset($empleado->Correo)?$empleado->Correo:'' }}" id="Correo">
     <br>
 
     <label for="Foto">Foto</label>   
@@ -23,4 +23,7 @@ Formulario que tendrá en común con create y edit
     <input type="file" name="Foto" value="" id="Foto">
     <br> 
 
-    <input type="submit" value="Guardar datos">
+    <input type="submit" value="{{ $modo }}datos">
+    <a href="{{ url('empleado') }}">Regresar</a>
+
+    
